@@ -1,26 +1,192 @@
-
-<!DOCTYPE html>
-<html lang="de">
+<!DOCTYPE html><html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Deutschland-Ticket Überprüfung</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 30px; }
-        .ticket { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h2 { color: #c00; }
-        .info { margin-top: 15px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DB Deutschland-Ticket</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .lang-switch {
+      margin-bottom: 10px;
+    }
+    .lang-switch button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: none;
+      background-color: #d00;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .ticket {
+      width: 320px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .db-logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+    }
+    .header {
+      color: #d00;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .field {
+      margin: 10px 0;
+      text-align: left;
+    }
+    .field label {
+      font-size: 12px;
+      color: #666;
+    }
+    .field div {
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .qr {
+      margin-top: 20px;
+    }
+    .qr img {
+      width: 140px;
+      height: 140px;
+    }
+    .footer {
+      font-size: 10px;
+      color: #888;
+      margin-top: 15px;
+    }
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .controls input {
+      padding: 6px;
+      width: 200px;
+      margin-bottom: 10px;
+    }
+    .controls button {
+      padding: 8px 16px;
+      background-color: #d00;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .countdown {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #444;
+    }
+    .time-display {
+      font-size: 13px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="ticket">
-        <h2>Deutschland-Ticket</h2>
-        <div class="info">
-            <p><strong>Name:</strong> Zeinab Alo</p>
-            <p><strong>Geburtsdatum:</strong> 01.03.1996</p>
-            <p><strong>Gültig von:</strong> 01.05.2025</p>
-            <p><strong>Gültig bis:</strong> 31.05.2025</p>
-            <p><strong>Status:</strong> Gültig</p>
-        </div>
+  <div class="lang-switch">
+    <button onclick="switchLang('de')">Deutsch</button>
+    <button onclick="switchLang('en')">English</button>
+    <button onclick="switchLang('ar')">العربية</button>
+  </div>
+  <div class="time-display" id="currentTime">00:00</div>
+  <div id="ticketContent" class="ticket">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Deutsche_Bahn_AG-Logo.svg" class="db-logo" alt="DB Logo">
+    <div class="header" data-de="DB Deutschland-Ticket" data-en="DB Germany Ticket" data-ar="تذكرة ألمانيا DB">DB Deutschland-Ticket</div>
+    <div class="field">
+      <label data-de="Fahrgast" data-en="Passenger" data-ar="الراكب">Fahrgast</label>
+      <div>Zeinab Alo</div>
     </div>
-</body>
-</html>
+    <div class="field">
+      <label data-de="Geburtsdatum" data-en="Date of Birth" data-ar="تاريخ الميلاد">Geburtsdatum</label>
+      <div>01.03.1996</div>
+    </div>
+    <div class="field">
+      <label data-de="Kundennummer" data-en="Customer Number" data-ar="رقم العميل">Kundennummer</label>
+      <div>8765432101</div>
+    </div>
+    <div class="field">
+      <label data-de="Gültig von" data-en="Valid from" data-ar="صالح من">Gültig von</label>
+      <div>30.04.2025</div>
+    </div>
+    <div class="field">
+      <label data-de="Gültig bis" data-en="Valid until" data-ar="صالح حتى">Gültig bis</label>
+      <div>30.05.2025</div>
+    </div>
+    <div class="field">
+      <label data-de="Ticketnummer" data-en="Ticket Number" data-ar="رقم التذكرة">Ticketnummer</label>
+      <div>DB-049-300425</div>
+    </div>
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=DB-Ticket-DB-049-300425&size=140x140" alt="QR Code">
+    </div>
+    <div class="countdown" id="countdown"></div>
+    <div class="footer" data-de="Nur gültig mit Ausweisdokument. Nicht übertragbar." data-en="Valid only with ID document. Not transferable." data-ar="صالح فقط مع بطاقة هوية. غير قابل للتحويل.">Nur gültig mit Ausweisdokument. Nicht übertragbar.</div>
+  </div>  <div class="controls">
+    <input type="text" id="idCheck" placeholder="Geben Sie Ihre Ausweisnummer ein">
+    <br>
+    <button onclick="verifyID()">Überprüfen</button>
+  </div>  <script>
+    function verifyID() {
+      const input = document.getElementById('idCheck').value;
+      if (input.trim() === "ZAL01996") {
+        alert("Verifiziert: Zeinab Alo");
+      } else {
+        alert("Ungültige Ausweisnummer");
+      }
+    }
+
+    function startCountdown() {
+      const endDate = new Date("2025-05-30T23:59:59").getTime();
+      const countdownEl = document.getElementById("countdown");
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+        if (distance < 0) {
+          countdownEl.innerText = "Ticket abgelaufen.";
+          return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        countdownEl.innerText = `Gültig noch: ${days}T ${hours}Std ${minutes}Min`;
+      }, 60000);
+    }
+
+    function switchLang(lang) {
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        el.innerText = el.getAttribute('data-' + lang);
+      });
+    }
+
+    function showTime() {
+      const el = document.getElementById("currentTime");
+      setInterval(() => {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        el.innerText = `${h}:${m}`;
+      }, 1000);
+    }
+
+    startCountdown();
+    showTime();
+  </script></body>
+          </html>
